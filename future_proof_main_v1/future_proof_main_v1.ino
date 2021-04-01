@@ -24,11 +24,15 @@ const int strike_direction[] = {1, 1, 0, 0, 1, 0, 1}; //0: strike counter-clock 
 //hall effect sensor input
 const int sensor_pin[] = {12, 9, 6, 22, 28, 34, 40};
 
+uint8_t inBytes[8];
+
+
+/*********************************ADJUSTABLE VARIABLES BEGIN HERE*********************************/
 //strike forward time in millis
-const int strike_millis[] = {220, 220, 220, 200, 205, 150, 180};
+const int strike_millis[] = {220, 220, 220, 200, 205, 150, 180}; //change the values here to adjust strike travel distance
 
 //strike frequency type
-const int strike_type[] = {0, 0, 0, 0, 0, 0, 0};
+const int strike_type[] = {0, 0, 0, 0, 0, 0, 0};//change the values here to change striking frequency
 
 /***STRIKE TYPE***
   0: off
@@ -39,14 +43,14 @@ const int strike_type[] = {0, 0, 0, 0, 0, 0, 0};
   5: every 1 hour
 */
 
-uint8_t inBytes[8];
+/*********************************ADJUSTABLE VARIABLES END HERE*********************************/
 
 void setup() {
   Serial.begin(9600);
   Serial1.begin(9600);
   Serial.println("begin");
 
-/*
+
   //initiate RTC
   if (! rtc.begin()) {
     Serial.println("Couldn't find RTC");
@@ -56,7 +60,7 @@ void setup() {
 
   // following line sets the RTC to the date & time this sketch was compiled
   rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
-*/
+
   //initiate WindChimes
   for (int i = 0; i < NUM_WINDCHIMES; i++) {
     if (strike_direction[i] == 1) {
@@ -64,8 +68,12 @@ void setup() {
     } else {
       windchimes[i].init(i + 1, motor_pin_backward[i], motor_pin_forward[i], sensor_pin[i], strike_millis[i], strike_type[i]);
     }
+    /*********************************ADJUSTABLE VARIABLES BEGIN HERE*********************************/
 
-    //windchimes[5].reset_striker();
+    //windchimes[i].reset_striker(); //uncomment this to run calibration function during setup
+
+    /*********************************ADJUSTABLE VARIABLES END HERE*********************************/
+
   }
 
 }
@@ -169,7 +177,7 @@ void serialEvent1() {
         index = index - 1; //shift 1-7 to 0-6
         if (index >= 0 && index < 7) {
           Serial.print("windchime");
-          Serial.print(index+1);
+          Serial.print(index + 1);
           Serial.println(" strike");
           windchimes[index].strike();
         }

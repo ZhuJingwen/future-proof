@@ -53,7 +53,6 @@ void WindChime::update() {
       //motor forward
 
       if ((millis() - state_start_millis) >= (long)forward_time) {
-        //Serial.println("state 2");
         state_start_millis = millis();
         motor_brake();
         motor_state = 2;
@@ -63,7 +62,6 @@ void WindChime::update() {
     case 2:
       //pause
       if ((millis() - state_start_millis) >= 300) { //wait time
-        //Serial.println("state 3");
         state_start_millis = millis();
         motor_backward();
         motor_state = 3;
@@ -73,14 +71,12 @@ void WindChime::update() {
     case 3:
       //motor backward
       if (!digitalRead(sensor_pin)) {
-        //Serial.println("state 3 sensor");
         //hall effect sensor registered, striker back in place
         motor_brake();
         state_start_millis = millis();
         motor_state = 4;
       } else if ((millis() - state_start_millis) >= (long)backward_time) {
         //exceeded timeout
-        //Serial.println("state 3 timeout");
         motor_brake();
         state_start_millis = millis();
         motor_state = 4;
