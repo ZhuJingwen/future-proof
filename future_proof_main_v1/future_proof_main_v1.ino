@@ -51,6 +51,7 @@ void setup() {
   Serial.println("begin");
 
 
+
   //initiate RTC
   if (! rtc.begin()) {
     Serial.println("Couldn't find RTC");
@@ -145,14 +146,15 @@ void serialEvent() {
 void serialEvent1() {
   if (Serial1.available()) {
     Serial1.readBytes(inBytes, 8);
+    Serial.println(inBytes[0]);
     switch (inBytes[0]) {
       case 'A':
         if (inBytes[1] == '0') {
           switch (inBytes[2]) {
             case '0':
-              Serial.println("all stop");
+              Serial.println("all reset");
               for (int i = 0; i < NUM_WINDCHIMES; i++) {
-                windchimes[i].motor_stop();
+                windchimes[i].reset_striker();
               }
               break;
             case '1':
@@ -162,8 +164,9 @@ void serialEvent1() {
               }
               break;
             case '2':
+              Serial.println("all stop");
               for (int i = 0; i < NUM_WINDCHIMES; i++) {
-                windchimes[i].strike();
+                windchimes[i].motor_stop();
               }
               break;
             default:

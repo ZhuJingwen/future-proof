@@ -7,6 +7,9 @@
 #define LEDPIN7 7
 #define LEDPIN8 9
 
+#define BUTTON8 15
+
+
 /*********************************************************
   This is a library for the MPR121 12-channel Capacitive touch sensor
 
@@ -68,6 +71,8 @@ void setup() {
   digitalWrite(LEDPIN6, HIGH);
   digitalWrite(LEDPIN7, HIGH);
   digitalWrite(LEDPIN8, HIGH);
+
+  attachInterrupt(digitalPinToInterrupt(BUTTON8), button8_interrupt, FALLING);
 
   Serial.println("Adafruit MPR121 Capacitive Touch sensor");
 
@@ -172,11 +177,11 @@ void loop() {
       //trigger pin 8 is for all windchimes
       Serial.print('A');
       Serial.print('0');
-      Serial.println('1');
+      Serial.println('0');
 
       Serial1.print('A');
       Serial1.print('0');
-      Serial1.println('1');
+      Serial1.println('0');
     }
     sleep_flag = false;
     trigger_flag = false;
@@ -198,5 +203,13 @@ void loop() {
       digitalWrite(LEDPIN8, LOW);
       sleep_flag = true;
     }
+  }
+}
+
+void button8_interrupt() {
+  if (sleep_flag) {
+    digitalWrite(LEDPIN8, HIGH);
+    trigger_flag = true;
+    trigger_pin = 8;
   }
 }
