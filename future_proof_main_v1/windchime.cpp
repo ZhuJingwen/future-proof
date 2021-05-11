@@ -15,7 +15,7 @@ void WindChime::init(int _motor_index, int _input_pin_1, int _input_pin_2, int _
   pinMode(sensor_pin, INPUT);
 
   motor_stop();
-  
+
   Serial.println(motor_index);
 
 }
@@ -71,6 +71,7 @@ void WindChime::update() {
     case 3:
       //motor backward
       if (!digitalRead(sensor_pin)) {
+
         //hall effect sensor registered, striker back in place
         motor_brake();
         state_start_millis = millis();
@@ -100,11 +101,26 @@ void WindChime::update() {
 
 }
 void WindChime::strike() {
-  if (motor_state == 0) {
-    //motor ready to strike
-    state_start_millis = millis();
-    motor_forward();
-    motor_state = 1;
+  if ((millis() - previous_strike_millis) > 1000) {
+    if (motor_state == 0) {
+      //motor ready to strike
+      state_start_millis = millis();
+
+      if (!digitalRead(sensor_pin)) {
+        Serial.println("trigger");
+        motor_forward();
+        motor_state = 1;
+      } else {
+        Serial.println("reset");
+        motor_backward();
+        motor_state = 3;
+      }
+
+    } else {
+      Serial.println("ongoing strike");
+    }
+
+    previous_strike_millis = millis();
   }
 }
 
