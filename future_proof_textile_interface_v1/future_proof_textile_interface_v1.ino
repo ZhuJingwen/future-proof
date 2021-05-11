@@ -50,6 +50,17 @@ unsigned long trigger_time = 0; //this long captures the current time when it's 
 bool sleep_flag = false;
 const long interval = 1000;
 
+unsigned long prev_millis_1 = 0;
+unsigned long prev_millis_2 = 0;
+unsigned long prev_millis_3 = 0;
+unsigned long prev_millis_4 = 0;
+unsigned long prev_millis_5 = 0;
+unsigned long prev_millis_6 = 0;
+unsigned long prev_millis_7 = 0;
+unsigned long prev_millis_8 = 0;
+
+const long serial_interval = 3000;
+
 void setup() {
   Serial.begin(9600);
   Serial1.begin(9600);
@@ -111,39 +122,64 @@ void loop() {
 
         switch (i) {
           case 0:
-            digitalWrite(LEDPIN4, HIGH);
-            trigger_flag = true;
-            trigger_pin = 4;
+            if (millis() - prev_millis_4 > serial_interval) {
+              prev_millis_4 = millis();
+              digitalWrite(LEDPIN4, HIGH);
+              trigger_flag = true;
+              trigger_pin = 4;
+            }
+
             break;
           case 1:
-            digitalWrite(LEDPIN3, HIGH);
-            trigger_flag = true;
-            trigger_pin = 3;
+            if (millis() - prev_millis_3 > serial_interval) {
+              prev_millis_3 = millis();
+              digitalWrite(LEDPIN3, HIGH);
+              trigger_flag = true;
+              trigger_pin = 3;
+            }
             break;
           case 3:
-            digitalWrite(LEDPIN2, HIGH);
-            trigger_flag = true;
-            trigger_pin = 2;
+            if (millis() - prev_millis_2 > serial_interval) {
+              prev_millis_4 = millis();
+              digitalWrite(LEDPIN2, HIGH);
+              trigger_flag = true;
+              trigger_pin = 2;
+            }
             break;
           case 5:
-            digitalWrite(LEDPIN1, HIGH);
-            trigger_flag = true;
-            trigger_pin = 1;
+            if (millis() - prev_millis_1 > serial_interval) {
+              prev_millis_1 = millis();
+              digitalWrite(LEDPIN1, HIGH);
+              trigger_flag = true;
+              trigger_pin = 1;
+            }
+
             break;
           case 6:
-            digitalWrite(LEDPIN7, HIGH);
-            trigger_flag = true;
-            trigger_pin = 7;
+            if (millis() - prev_millis_7 > serial_interval) {
+              prev_millis_7 = millis();
+              digitalWrite(LEDPIN7, HIGH);
+              trigger_flag = true;
+              trigger_pin = 7;
+            }
+
             break;
           case 8:
-            digitalWrite(LEDPIN6, HIGH);
-            trigger_flag = true;
-            trigger_pin = 6;
+            if (millis() - prev_millis_6 > serial_interval) {
+              prev_millis_6 = millis();
+              digitalWrite(LEDPIN6, HIGH);
+              trigger_flag = true;
+              trigger_pin = 6;
+            }
+
             break;
           case 10:
-            digitalWrite(LEDPIN5, HIGH);
-            trigger_flag = true;
-            trigger_pin = 5;
+            if (millis() - prev_millis_5 > serial_interval) {
+              prev_millis_5 = millis();
+              digitalWrite(LEDPIN5, HIGH);
+              trigger_flag = true;
+              trigger_pin = 5;
+            }
             break;
           default:
             break;
